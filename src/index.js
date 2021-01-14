@@ -19,6 +19,15 @@ client.on('ready', async () => {
         ])
         .registerDefaults()
         .registerCommandsIn(join(__dirname, 'commands'))
+    client.user.setPresence({
+        activity: {
+            name: `with your life | ${process.env.PREFIX}help`,
+            type: 'PLAYING'
+        },
+        status: 'online'
+    })
 })
+
+
 
 client.login(process.env.TOKEN)
