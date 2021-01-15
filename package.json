@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config src/index.js"
+    "dev": "nodemon -r dotenv/config src/index.js",
+    "start": "node ./src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -12,9 +13,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "discord.js": "^12.5.1",
-    "discord.js-commando": "git+https://github.com/discordjs/Commando.git",
-    "mongoose": "^5.11.11",
-    "redis": "^3.0.2"
+    "discord.js-commando": "git+https://github.com/discordjs/Commando.git"
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
