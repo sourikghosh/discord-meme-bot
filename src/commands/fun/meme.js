@@ -18,18 +18,22 @@ module.exports = class MemeCommand extends Commando.Command {
     }
 
     async run(message, args) {
-        const { guild } = message
 
         if (args.length !== 1) {
             message.reply(
-                `Incorrect syntax: Too many Arguments.
-                Type ${guild.commandPrefix}help meme to see the Argument`
+                `Incorrect syntax: Too many Arguments.Type !help meme to see the Argument`
             )
             return;
         }
 
-        const category = (!args[0]) ? 'hot' : args[0].toLowerCase()
+        let category = (!args[0]) ? 'hot' : args[0].toLowerCase()
 
+        if (category !== 'new' && category !== 'hot' && category !== 'top') {
+            message.reply(
+                `Incorrect syntax: Wrong Argumenet.Type !help meme to see the Argument`
+            )
+            return;
+        }
         const reddit = [
             `https://www.reddit.com/r/ProgrammerHumor/${category}/.json`,
             `https://www.reddit.com/r/codingmemes/${category}/.json`,
