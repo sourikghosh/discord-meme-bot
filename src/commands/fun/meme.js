@@ -12,7 +12,8 @@ module.exports = class MemeCommand extends Commando.Command {
             argsPromptLimit: 1,
             argsCount: 0,
             argsType: 'multiple',
-            format: '<new> | <hot> | <top> by default hot takes only 1 argument'
+            format: '<new> | <hot> | <top> by default hot takes only 1 argument',
+            aliases: ['m']
         })
     }
 
@@ -30,7 +31,7 @@ module.exports = class MemeCommand extends Commando.Command {
             const embed = new MessageEmbed()
             embed.setImage(memeObject.imgUrl)
             embed.setURL(memeObject.url)
-            embed.setColor('RANDOM')
+            embed.setColor('#D359C9')
             embed.setFooter(`👍 ${memeObject.upVote} 👎 ${memeObject.downVote} 💬 ${memeObject.comments}`)
             if (memeObject.title !== undefined) {
                 embed.setTitle(memeObject.title)
