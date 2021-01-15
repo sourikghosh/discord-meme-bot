@@ -1,8 +1,7 @@
 const { MessageEmbed } = require('discord.js')
 const Commando = require('discord.js-commando')
-const axios = require('axios')
-
-
+const randomArray = require('../../util/random/randomArray')
+const memeExtraction = require('../../util/meme/memeExtraction')
 module.exports = class MemeCommand extends Commando.Command {
     constructor(client) {
         super(client, {
@@ -16,35 +15,30 @@ module.exports = class MemeCommand extends Commando.Command {
             format: '<new> | <hot> | <top> by default hot takes only 1 argument'
         })
     }
+
     async run(message, args) {
-        const category = args || 'hot'
+        const category = (!args[0]) ? 'hot' : args
         const reddit = [
             `https://www.reddit.com/r/ProgrammerHumor/${category}/.json`,
             `https://www.reddit.com/r/codingmemes/${category}/.json`,
             `https://www.reddit.com/r/ProgrammerAnimemes/${category}/.json`
         ]
-        const subreddit = reddit[Math.floor(Math.random() * reddit.length)]
-        const embed = new MessageEmbed()
-        const { data } = await axios.get(subreddit)
+        const subreddit = randomArray(reddit)
+
         try {
-            const { url } = data.data.children[0].data
-            if ((/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(url)) {
-
-                const { permalink, title, ups, downs, num_comments } = data.data.children[0].data
-
-                if (title !== '' && title !== 'undifined') { embed.setTitle(`${title}`) }
-                embed.setURL(`https://reddit.com${permalink}`)
-                embed.setImage(url)
-                embed.setColor('RANDOM')
-                embed.setFooter(`👍 ${ups} 👎 ${downs} 💬 ${num_comments}`)
-
-                message.channel.send(embed);
+            const memeObject = await memeExtraction(subreddit())
+            const embed = new MessageEmbed()
+            embed.setImage(memeObject.imgUrl)
+            embed.setURL(memeObject.url)
+            embed.setColor('RANDOM')
+            embed.setFooter(`👍 ${memeObject.upVote} 👎 ${memeObject.downVote} 💬 ${memeObject.comments}`)
+            if (memeObject.title !== undefined) {
+                embed.setTitle(memeObject.title)
             }
-            else {
-                console.log(`Not Valid image`)
-            }
+            message.channel.send(embed);
+        }
 
-        } catch (error) {
+        catch (error) {
             console.error('ERR:', error.message)
         }
     }
