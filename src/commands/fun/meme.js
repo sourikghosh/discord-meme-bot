@@ -27,29 +27,25 @@ module.exports = class MemeCommand extends Commando.Command {
         const embed = new MessageEmbed()
         const { data } = await axios.get(subreddit)
         try {
-            // if (url.endsWith('.jpg') || url.endsWith('.jpeg') || url.endsWith('.png') || url.endsWith('.gif')) 
-            const { url, title, ups, downs, num_comments } = data.data.children[0].data
-            console.log(`Image: ${url}  Title: ${title}`)
-            embed.setTitle(`${title}`)
-            //embed.setURL(`${memeUrl}`)
-            embed.setImage(url)
-            embed.setColor('RANDOM')
-            embed.setFooter(`👍 ${ups} 👎 ${downs} 💬 ${num_comments}`)
-            message.channel.send(embed);
+            const { url } = data.data.children[0].data
+            if ((/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(url)) {
+
+                const { permalink, title, ups, downs, num_comments } = data.data.children[0].data
+
+                if (title !== '' && title !== 'undifined') { embed.setTitle(`${title}`) }
+                embed.setURL(`https://reddit.com${permalink}`)
+                embed.setImage(url)
+                embed.setColor('RANDOM')
+                embed.setFooter(`👍 ${ups} 👎 ${downs} 💬 ${num_comments}`)
+
+                message.channel.send(embed);
+            }
+            else {
+                console.log(`Not Valid image`)
+            }
+
         } catch (error) {
             console.error('ERR:', error.message)
         }
-
-        // axios
-        //     .get('https://www.reddit.com/r/memes/new/.json')
-        //     .then((response) => {
-        //         let content = JSON.parse(response.body);
-        //         let permalink = content[0].data.children[0].data.permalink;
-        //         let memeUrl = `https://reddit.com${permalink}`;
-        //         let memeImage = content[0].data.children[0].data.url;
-        //         let memeTitle = content[0].data.children[0].data.title;
-        //         let memeUpvotes = content[0].data.children[0].data.ups;
-        //         let memeDownvotes = content[0].data.children[0].data.downs;
-        //         let memeNumComments = content[0].data.children[0].data.num_comments;
     }
 }
