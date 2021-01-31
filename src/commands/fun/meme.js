@@ -19,7 +19,7 @@ module.exports = class MemeCommand extends Commando.Command {
 
     async run(message, args) {
 
-        if (args.length !== 1) {
+        if (args.length >= 1) {
             message.reply(
                 `Incorrect syntax: Too many Arguments.Type !help meme to see the Argument`
             )
